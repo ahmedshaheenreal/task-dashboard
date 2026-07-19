@@ -44,7 +44,7 @@ To guarantee application stability, the architecture was designed to perform a s
 1. Clone the repository:
    ```bash
    git clone https://github.com/ahmedshaheenreal/task-dashboard.git
-   cd dashboard
+ 
    ```
 
 2. Install dependencies:
