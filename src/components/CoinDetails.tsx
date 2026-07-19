@@ -55,7 +55,7 @@ function CoinDetails() {
           <div>
             <p className="text-sm text-muted-foreground mb-1 font-medium">Current Price</p>
             <div className="flex items-baseline gap-3">
-              <span className="text-3xl font-bold text-white tracking-tight">
+              <span className={` ${(selectedAsset.current_price + "").length > 5 ? "text-2xl" : "text-3xl"}  font-bold text-white tracking-tight`}>
                 ${selectedAsset.current_price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 })}
               </span>
             </div>

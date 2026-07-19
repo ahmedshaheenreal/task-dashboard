@@ -10,7 +10,7 @@ import { useMarketStore } from "../store/useMarketStore.store";
 import { useEffect } from "react";
 import { TablePagination } from "./TablePagination";
 import { TrendingDown, TrendingUp } from "lucide-react";
-
+import ErrorComponent from "./Error";
 function DataTable() {
   const {
     isLoading,
@@ -18,6 +18,7 @@ function DataTable() {
     selectedAsset,
     setSelectedAsset,
     page,
+    error,
     getFilteredAndPaginatedAssets,
   } = useMarketStore();
 
@@ -39,8 +40,17 @@ function DataTable() {
             <TableHead className="text-right pr-6 py-4 hidden md:table-cell">Volume</TableHead>
           </TableRow>
         </TableHeader>
+        {error &&
 
-        {isLoading ? (
+          <TableBody>
+            <TableRow>
+              <TableCell colSpan={5} className="text-center h-64 text-muted-foreground">
+                <ErrorComponent title="Error" message={error} onRetry={fetchMarkets} />
+              </TableCell>
+            </TableRow>
+          </TableBody>
+        }
+        {isLoading && !error ? (
           <TableBody>
             <TableRow>
               <TableCell colSpan={5} className="text-center h-64 text-muted-foreground">
@@ -107,7 +117,7 @@ function DataTable() {
       <div className="mt-auto border-t border-white/10 bg-white/5 px-6 py-4 flex items-center justify-center shrink-0">
         <TablePagination totalPages={totalPages} />
       </div>
-    </div>
+    </div >
   );
 }
 

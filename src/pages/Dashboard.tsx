@@ -71,7 +71,7 @@ function Dashboard() {
                             <button
                                 disabled={isLoading}
                                 onClick={() => refreshAssets()}
-                                className="w-10 h-10 disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer rounded-full glass-panel flex items-center justify-center hover:bg-white/10 transition-colors shrink-0"
+                                className="w-10 h-10  disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer rounded-full  flex items-center justify-center hover:bg-white/10 transition-colors shrink-0"
                             >
                                 <RefreshCcwIcon className="w-5 h-5 text-white" />
                             </button>
@@ -79,7 +79,7 @@ function Dashboard() {
                         </div>
                         <button
                             onClick={() => setShowUserMenu(!showUserMenu)}
-                            className="w-10 h-10 rounded-full glass-panel flex items-center justify-center hover:bg-white/10 transition-colors shrink-0"
+                            className="w-10 h-10 cursor-pointer rounded-full bg-background/10 backdrop-blur-md border border-white/20 shadow-lgflex items-center justify-center hover:bg-white/10 transition-colors shrink-0"
                         >
                             <img
                                 src="https://api.dicebear.com/7.x/notionists/svg?seed=Felix&backgroundColor=transparent"

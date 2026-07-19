@@ -36,6 +36,8 @@ interface MarketState {
   };
 }
 
+const API_URL = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd";
+
 export const useMarketStore = create<MarketState>((set, get) => ({
   assets: [],
   selectedAsset: null,
@@ -53,8 +55,9 @@ export const useMarketStore = create<MarketState>((set, get) => ({
   },
   refreshAssetById: async (id) => {
     try {
+      set({ isLoading: true, error: null });
       const response = await fetch(
-        `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${id}`,
+        `${API_URL}&ids=${id}`,
       );
       const data = await response.json();
       if (data.length > 0)
@@ -76,7 +79,7 @@ export const useMarketStore = create<MarketState>((set, get) => ({
 
     try {
       const response = await fetch(
-        `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=${DATA_SIZE}`,
+        `${API_URL}&order=market_cap_desc&per_page=${DATA_SIZE}`,
       );
 
       if (!response.ok) {
