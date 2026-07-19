@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import { DATA_SIZE, ITEMS_PER_PAGE } from "../constants";
 
-// 1. Precise TypeScript definition mapping exactly what CoinGecko returns
 export interface CoinData {
   id: string;
   name: string;
@@ -22,9 +21,11 @@ interface MarketState {
   searchQuery: string;
   isLoading: boolean;
   error: string | null;
-  itemsPerPage: number; // Optional property for pagination
-  page: number; // Added page state for pagination
+  itemsPerPage: number;
+  page: number;
   // Actions
+  refreshAssets: () => void;
+  refreshAssetById: (id: string) => void;
   setPage: (page: number) => void;
   fetchMarkets: () => Promise<void>;
   setSelectedAsset: (asset: CoinData | null) => void;
@@ -42,19 +43,38 @@ export const useMarketStore = create<MarketState>((set, get) => ({
   isLoading: false,
   error: null,
   page: 1,
-  itemsPerPage: ITEMS_PER_PAGE, // Default items per page for pagination
+  itemsPerPage: ITEMS_PER_PAGE,
   setSelectedAsset: (asset) => set({ selectedAsset: asset }),
   setSearchQuery: (query) => set({ searchQuery: query }),
   setPage: (page) => set({ page }),
+  refreshAssets: () => {
+    const { fetchMarkets } = get();
+    fetchMarkets();
+  },
+  refreshAssetById: async (id) => {
+    try {
+      const response = await fetch(
+        `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=${id}`,
+      );
+      const data = await response.json();
+      if (data.length > 0)
+        set((state) => ({
+          assets: state.assets.map((coin) => coin.id === id ? data[0] : coin),
+          selectedAsset: data[0],
+        }));
 
+    } catch (error) {
+      console.error("Error refreshing asset by ID", error);
+    } finally {
+      set({ isLoading: false });
+    }
+  },
   fetchMarkets: async () => {
-    // Prevent overlapping requests if a fetch is already running
     if (get().isLoading) return;
 
     set({ isLoading: true, error: null });
 
     try {
-      // Fetch top 100 coins by market cap in USD
       const response = await fetch(
         `https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=${DATA_SIZE}`,
       );

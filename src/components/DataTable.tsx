@@ -1,9 +1,7 @@
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
-  TableFooter,
   TableHead,
   TableHeader,
   TableRow,
@@ -11,6 +9,8 @@ import {
 import { useMarketStore } from "../store/useMarketStore.store";
 import { useEffect } from "react";
 import { TablePagination } from "./TablePagination";
+import { TrendingDown, TrendingUp } from "lucide-react";
+
 function DataTable() {
   const {
     isLoading,
@@ -20,79 +20,94 @@ function DataTable() {
     page,
     getFilteredAndPaginatedAssets,
   } = useMarketStore();
+
   useEffect(() => {
     fetchMarkets();
-  }, [page]); // Fetch markets whenever the page changes
-  const { filteredPaginatedItems, totalPages } =
-    getFilteredAndPaginatedAssets();
+  }, [page, fetchMarkets]);
+
+  const { filteredPaginatedItems, totalPages } = getFilteredAndPaginatedAssets();
 
   return (
-    <Table className="w-full bg-background text-left border-collapse mt-4">
-      <TableCaption className="text-white  h-full border-b border-outline-variant">
-        Current Market Overview of Top 5 Cryptocurrencies by Market Cap
-      </TableCaption>
-      <TableHeader className="   font-jetbrains text-sm border-b border-outline-variant">
-        <TableRow className="[&>*]:text-[#bbcabf]">
-          <TableHead className="w-[100px]  ">Name</TableHead>
-          <TableHead>Symbol</TableHead>
-          <TableHead>Current Price</TableHead>
-          <TableHead className="text-center ">24h Change %</TableHead>
-          <TableHead className="text-left ">24h Volume</TableHead>
-        </TableRow>
-      </TableHeader>
-
-      {isLoading && (
-        <TableBody className="text-white  border-separate border-spacing-0 ">
-          <TableRow>
-            <TableCell colSpan={5} rowSpan={5} className="text-center h-[50vh]">
-              Loading...
-            </TableCell>
+    <div className="flex flex-col h-full bg-transparent">
+      <Table className="w-full text-left border-collapse relative">
+        <TableHeader className="border-b border-white/10 sticky top-0 bg-[#0a0a14]/90 backdrop-blur-md z-10">
+          <TableRow className="hover:bg-transparent border-white/5 [&>*]:text-muted-foreground [&>*]:font-medium">
+            <TableHead className="w-[150px] pl-6 py-4">Asset Name</TableHead>
+            <TableHead className="py-4 hidden sm:table-cell">Symbol</TableHead>
+            <TableHead className="py-4">Price</TableHead>
+            <TableHead className="text-center py-4 hidden sm:table-cell">24h Change</TableHead>
+            <TableHead className="text-right pr-6 py-4 hidden md:table-cell">Volume</TableHead>
           </TableRow>
-        </TableBody>
-      )}
-      {!isLoading && (
-        <TableBody className="text-white  border-separate border-spacing-0 h-[calc(100vh-350px)] overflow-y-auto">
-          {filteredPaginatedItems.map((asset) => (
-            <TableRow
-              key={asset.id}
-              className={
-                " h-fit " +
-                (selectedAsset?.id === asset.id
-                  ? "bg-primary/10 border-l-primary/80 border-l-4"
-                  : "" + " hover:bg-primary/10 cursor-pointer")
-              }
-              onClick={() => setSelectedAsset(asset)}
-            >
-              <TableCell className="font-medium">{asset.name}</TableCell>
-              <TableCell className="font-jetbrains text-sm text-[#bbcabf]">
-                {asset.symbol.toUpperCase()}
-              </TableCell>
-              <TableCell>{asset.current_price.toFixed(2)}</TableCell>
-              <TableCell
-                className={`text-center ${asset.price_change_percentage_24h < 0 ? "text-red-500" : "text-green-500"}`}
-              >
-                <span
-                  className={`inline-flex items-center gap-1   px-2 py-0.5 rounded-full font-data-sm text-data-sm border${asset.price_change_percentage_24h < 0 ? " bg-red-500/10 border-red-500/20 text-red-500" : " bg-green-500/10 border-green-500/20 text-green-500"} `}
-                >
-                  {`${asset.price_change_percentage_24h < 0 ? "-" : "+"}${Math.abs(asset.price_change_percentage_24h).toFixed(2)}%`}
-                </span>
-              </TableCell>
-              <TableCell className="text-left">
-                {asset.total_volume.toLocaleString()}
+        </TableHeader>
+
+        {isLoading ? (
+          <TableBody>
+            <TableRow>
+              <TableCell colSpan={5} className="text-center h-64 text-muted-foreground">
+                <div className="flex flex-col items-center justify-center gap-4">
+                  <div className="w-8 h-8 rounded-full border-2 border-primary border-t-transparent animate-spin" />
+                  <p>Loading market data...</p>
+                </div>
               </TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      )}
+          </TableBody>
+        ) : (
+          <TableBody className="text-white border-separate border-spacing-0">
+            {filteredPaginatedItems.map((asset) => (
+              <TableRow
+                key={asset.id}
+                className={`transition-all duration-200 cursor-pointer border-b border-white/5 ${selectedAsset?.id === asset.id
+                  ? "bg-primary/10 border-l-2 border-l-primary"
+                  : "hover:bg-white/5 border-l-2 border-l-transparent"
+                  }`}
+                onClick={() => setSelectedAsset(asset)}
+              >
+                <TableCell className="font-medium pl-4 sm:pl-6 py-4">
+                  <div className="flex items-center gap-3">
+                    <img src={asset.image} alt={asset.name} className="w-8 h-8 rounded-full shadow-sm" />
+                    <span className="font-semibold">{asset.name}</span>
+                  </div>
+                </TableCell>
+                <TableCell className="text-muted-foreground font-mono text-sm uppercase py-4 hidden sm:table-cell">
+                  {asset.symbol}
+                </TableCell>
+                <TableCell className="font-medium py-4">
+                  ${asset.current_price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 })}
 
-      <TableFooter className="bg-neutral ">
-        <TableRow className="bg-neutral  text-white     ">
-          <TableCell colSpan={5} className="text-center">
-            <TablePagination totalPages={totalPages} />
-          </TableCell>
-        </TableRow>
-      </TableFooter>
-    </Table>
+                  <div className={`text-xs mt-1 sm:hidden ${asset.price_change_percentage_24h < 0 ? "text-red-400" : "text-green-400"}`}>
+                    {asset.price_change_percentage_24h < 0 ? "" : "+"}{(asset.price_change_percentage_24h || 0).toFixed(2)}%
+                  </div>
+                </TableCell>
+                <TableCell className="text-center py-4 hidden sm:table-cell">
+                  <div className="flex justify-center">
+                    <span
+                      className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold ${asset.price_change_percentage_24h < 0
+                        ? "bg-red-500/10 text-red-400 border border-red-500/20"
+                        : "bg-green-500/10 text-green-400 border border-green-500/20"
+                        }`}
+                    >
+                      {asset.price_change_percentage_24h < 0 ? (
+                        <TrendingDown className="w-3 h-3" />
+                      ) : (
+                        <TrendingUp className="w-3 h-3" />
+                      )}
+                      {Math.abs(asset.price_change_percentage_24h).toFixed(2)}%
+                    </span>
+                  </div>
+                </TableCell>
+                <TableCell className="text-right pr-6 py-4 font-mono text-sm text-muted-foreground hidden md:table-cell">
+                  ${asset.total_volume.toLocaleString()}
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        )}
+      </Table>
+
+      <div className="mt-auto border-t border-white/10 bg-white/5 px-6 py-4 flex items-center justify-center shrink-0">
+        <TablePagination totalPages={totalPages} />
+      </div>
+    </div>
   );
 }
 
