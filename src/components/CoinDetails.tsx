@@ -39,7 +39,9 @@ function CoinDetails() {
               $ {selectedAsset?.current_price?.toFixed(2) || "0.00"}
             </span>
             <span className="  text-sm text-primary  bg-primary/10 px-2 py-1 rounded-DEFAULT border border-primary/20">
-              +2.45%
+              +
+              {selectedAsset?.price_change_percentage_24h?.toFixed(2) || "0.00"}
+              %
             </span>
           </div>
         </div>

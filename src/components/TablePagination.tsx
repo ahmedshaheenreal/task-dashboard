@@ -1,6 +1,6 @@
 import { useMarketStore } from "../store/useMarketStore.store";
 
-export function TablePagination() {
+export function TablePagination({ totalPages }: { totalPages: number }) {
   const { page, setPage, isLoading } = useMarketStore();
 
   return (
@@ -20,7 +20,7 @@ export function TablePagination() {
 
         <button
           onClick={() => setPage(page + 1)}
-          disabled={isLoading}
+          disabled={isLoading || page >= totalPages}
           className="px-3 py-1.5 text-xs font-medium rounded-md bg-slate-800 text-slate-300 border border-slate-700 hover:bg-slate-700 disabled:opacity-40 disabled:cursor-not-allowed transition-all"
         >
           Next
