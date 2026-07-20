@@ -12,7 +12,7 @@ This project provides a sleek, glassmorphic user interface for tracking top cryp
 - **Detailed Asset View**: A dedicated panel that dynamically updates upon row selection, displaying extended market metrics (24h High/Low, Market Rank) with responsive design considerations.
 - **Resilient Data Fetching**: Robust loading, error, and empty states. Features manual refresh capabilities that are automatically disabled during active network requests to prevent duplicate calls.
 - **Simulated Authentication**: Secure-feeling local authentication flow using Zustand's persist middleware to maintain session state across reloads.
-- **Premium UI/UX**: Implemented a modern "Aura" aesthetic utilizing Tailwind CSS v4, custom glassmorphism utility classes, and optimized micro-animations.
+- **Premium UI/UX**: Implemented a modern aesthetic utilizing Tailwind CSS v4, custom glassmorphism utility classes, and optimized micro-animations.
 - **Monospace Numeric Styling**: All prices, percentages, and financial figures use `font-mono` with `tabular-nums` to ensure consistent digit widths and prevent layout shifts when values update in real time.
 
 ## Tech Stack
