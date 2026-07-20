@@ -1,4 +1,5 @@
 import { LayoutDashboard, Wallet, ArrowRightLeft, ChevronRight } from "lucide-react";
+import { showComingSoon } from "./CommingSoonToast";
 
 
 function LeftSideBar() {
@@ -11,6 +12,7 @@ function LeftSideBar() {
         {dummySideBar.map((item, idx) => (
             <button
                 key={idx}
+                onClick={!item.active ? showComingSoon : undefined}
                 className={`flex items-center justify-center lg:justify-start gap-4 px-3 py-3 rounded-xl transition-all duration-300 group ${item.active
                     ? "bg-primary/10 text-primary shadow-[inset_0_0_0_1px_rgba(139,92,246,0.2)]"
                     : "text-muted-foreground hover:text-white hover:bg-white/5"
