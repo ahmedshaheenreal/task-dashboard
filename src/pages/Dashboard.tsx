@@ -1,28 +1,13 @@
-import { useState, useRef, useEffect } from "react";
-import { RefreshCcwIcon, Activity, LogOut } from "lucide-react";
+import { RefreshCcwIcon, Activity } from "lucide-react";
+import { useMarketStore } from "../store/useMarketStore.store";
 import CoinDetails from "../components/CoinDetails";
 import DataTable from "../components/DataTable";
 import SearchInput from "../components/SearchInput";
-import { useAuthStore } from "../store/useAuthStore.store";
 import LeftSideBar from "../components/LeftSideBar";
-import { useMarketStore } from "../store/useMarketStore.store";
-
+import UserAvatarButton from "../components/UserAvatarButton";
 function Dashboard() {
-    const [showUserMenu, setShowUserMenu] = useState(false);
-    const menuRef = useRef<HTMLDivElement>(null);
-    const { logout } = useAuthStore();
     const { refreshAssets, isLoading } = useMarketStore()
-    useEffect(() => {
-        const handleClickOutside = (event: MouseEvent) => {
-            if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-                setShowUserMenu(false);
-            }
-        };
-        document.addEventListener('mousedown', handleClickOutside);
-        return () => {
-            document.removeEventListener('mousedown', handleClickOutside);
-        };
-    }, []);
+
 
 
     return (
@@ -65,7 +50,7 @@ function Dashboard() {
                         </p>
                     </div>
 
-                    <div className="flex items-center gap-4 shrink-0 ml-4 relative" ref={menuRef}>
+                    <div className="flex items-center gap-4 shrink-0 ml-4 relative" >
                         <div className="hidden sm:flex gap-4">
 
                             <button
@@ -77,30 +62,10 @@ function Dashboard() {
                             </button>
                             <SearchInput />
                         </div>
-                        <button
-                            onClick={() => setShowUserMenu(!showUserMenu)}
-                            className="w-10 h-10 cursor-pointer rounded-full bg-background/10 backdrop-blur-md border border-white/20 shadow-lgflex items-center justify-center hover:bg-white/10 transition-colors shrink-0"
-                        >
-                            <img
-                                src="https://api.dicebear.com/7.x/notionists/svg?seed=Felix&backgroundColor=transparent"
-                                alt="Avatar"
-                                className="w-8 h-8 rounded-full"
-                            />
-                        </button>
+                        <UserAvatarButton />
 
-                        {/* User Menu Dropdown */}
-                        {showUserMenu && (
-                            <div className="absolute top-14 right-0 w-32 glass-panel p-2 shadow-2xl animate-in fade-in slide-in-from-top-2 duration-200 z-50 border border-white/10 origin-top-right">
-                                <button
-                                    disabled={isLoading}
-                                    onClick={() => logout()}
-                                    className="flex items-center justify-center gap-2 px-3 py-2 rounded-lg text-sm font-medium text-red-400 hover:text-red-300 hover:bg-red-400/10 transition-colors w-full text-center"
-                                >
-                                    <LogOut className="w-4 h-4" />
-                                    Logout
-                                </button>
-                            </div>
-                        )}
+
+
                     </div>
                 </header>
 
