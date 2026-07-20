@@ -8,8 +8,6 @@ import UserAvatarButton from "../components/UserAvatarButton";
 function Dashboard() {
     const { refreshAssets, isLoading } = useMarketStore()
 
-
-
     return (
         <div className="flex h-screen overflow-hidden text-foreground antialiased selection:bg-primary/30 selection:text-primary-foreground">
 
