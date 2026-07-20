@@ -10,9 +10,9 @@ function App() {
   return (
     <>
       {isAuthenticated ? <Dashboard /> : <Login />}
-      <Toaster position="bottom-right" />
+      <Toaster position="bottom-left" />
     </>
   );
 }
 
-export default App;
+export default App;   

@@ -62,7 +62,7 @@ function DataTable() {
               </TableCell>
             </TableRow>
           </TableBody>
-        ) : filteredPaginatedItems.length === 0 ? (
+        ) : filteredPaginatedItems.length === 0 && !error ? (
           <TableBody>
             <TableRow>
               <TableCell colSpan={5} className="text-center h-64 text-muted-foreground">

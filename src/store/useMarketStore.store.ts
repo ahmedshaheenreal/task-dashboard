@@ -83,6 +83,7 @@ export const useMarketStore = create<MarketState>((set, get) => ({
       );
 
       if (!response.ok) {
+        set({ assets: [], })
         throw new Error(
           `API Error: ${response.status} - Rate limit or invalid request.`,
         );
@@ -101,6 +102,7 @@ export const useMarketStore = create<MarketState>((set, get) => ({
         }
       }
     } catch (err: any) {
+
       set({ error: err.message || "Something went wrong", isLoading: false });
     }
   },
