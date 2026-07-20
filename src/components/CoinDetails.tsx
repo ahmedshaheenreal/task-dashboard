@@ -1,7 +1,14 @@
 import { useMarketStore } from "../store/useMarketStore.store";
 import DummyButtons from "./DummyButtons";
 import TimeStampState from "./TimeStampState";
-import { TrendingUp, TrendingDown, Activity, BarChart3, Hash, RefreshCcwIcon } from "lucide-react";
+import {
+  TrendingUp,
+  TrendingDown,
+  Activity,
+  BarChart3,
+  Hash,
+  RefreshCcwIcon,
+} from "lucide-react";
 
 function CoinDetails() {
   const { selectedAsset, refreshAssetById, isLoading } = useMarketStore();
@@ -13,7 +20,10 @@ function CoinDetails() {
           <Activity className="w-10 h-10 text-white/40" />
         </div>
         <h3 className="text-xl font-bold text-white mb-2">No Asset Selected</h3>
-        <p className="text-sm max-w-[250px]">Select a cryptocurrency from the table to view its detailed market statistics.</p>
+        <p className="text-sm max-w-[250px]">
+          Select a cryptocurrency from the table to view its detailed market
+          statistics.
+        </p>
       </div>
     );
   }
@@ -46,23 +56,30 @@ function CoinDetails() {
               </span>
             </div>
           </div>
-
         </div>
       </div>
 
       <div className="p-6 flex-1 overflow-y-auto custom-scrollbar flex flex-col gap-6">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 p-5 rounded-2xl bg-gradient-to-br from-white/5 to-transparent border border-white/10 hover:border-white/20 transition-colors">
           <div>
-            <p className="text-sm text-muted-foreground mb-1 font-medium">Current Price</p>
+            <p className="text-sm text-muted-foreground mb-1 font-medium">
+              Current Price
+            </p>
             <div className="flex items-baseline gap-3">
-              <span className={` ${(selectedAsset.current_price + "").length > 5 ? "text-2xl" : "text-3xl"}  font-bold text-white tracking-tight`}>
-                ${selectedAsset.current_price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 })}
+              <span
+                className={`font-mono tabular-nums ${(selectedAsset.current_price + "").length > 5 ? "text-2xl" : "text-3xl"}  font-bold text-white tracking-tight`}
+              >
+                $
+                {selectedAsset.current_price.toLocaleString(undefined, {
+                  minimumFractionDigits: 2,
+                  maximumFractionDigits: 6,
+                })}
               </span>
             </div>
           </div>
           <div className="flex items-center">
             <span
-              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-semibold shadow-inner ${selectedAsset.price_change_percentage_24h < 0
+              className={`inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-sm font-semibold shadow-inner tabular-nums font-mono ${selectedAsset.price_change_percentage_24h < 0
                 ? "bg-red-500/10 text-red-400 border border-red-500/20"
                 : "bg-green-500/10 text-green-400 border border-green-500/20"
                 }`}
@@ -82,47 +99,65 @@ function CoinDetails() {
           <div className="bg-white/5 p-4 rounded-xl border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-300 group">
             <div className="flex items-center gap-2 mb-2">
               <TrendingUp className="w-4 h-4 text-green-400 group-hover:scale-110 transition-transform" />
-              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">24h High</p>
+              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                24h High
+              </p>
             </div>
-            <p className="text-lg font-mono text-white truncate">
-              ${selectedAsset.high_24h?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 }) || "0.00"}
+            <p className="text-lg font-mono tabular-nums text-white truncate">
+              $
+              {selectedAsset.high_24h?.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 6,
+              }) || "0.00"}
             </p>
           </div>
           <div className="bg-white/5 p-4 rounded-xl border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-300 group">
             <div className="flex items-center gap-2 mb-2">
               <TrendingDown className="w-4 h-4 text-red-400 group-hover:scale-110 transition-transform" />
-              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">24h Low</p>
+              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                24h Low
+              </p>
             </div>
-            <p className="text-lg font-mono text-white truncate">
-              ${selectedAsset.low_24h?.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 }) || "0.00"}
+            <p className="text-lg font-mono tabular-nums text-white truncate">
+              $
+              {selectedAsset.low_24h?.toLocaleString(undefined, {
+                minimumFractionDigits: 2,
+                maximumFractionDigits: 6,
+              }) || "0.00"}
             </p>
           </div>
           <div className="bg-white/5 p-4 rounded-xl border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-300 group col-span-2 sm:col-span-1">
             <div className="flex items-center gap-2 mb-2">
               <BarChart3 className="w-4 h-4 text-primary group-hover:scale-110 transition-transform" />
-              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Total Volume</p>
+              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                Total Volume
+              </p>
             </div>
-            <p className="text-lg font-mono text-white truncate">
-              {selectedAsset.total_volume ? `$${selectedAsset.total_volume.toLocaleString()}` : "0"}
+            <p className="text-lg font-mono tabular-nums text-white truncate">
+              {selectedAsset.total_volume
+                ? `$${selectedAsset.total_volume.toLocaleString()}`
+                : "0"}
             </p>
           </div>
           <div className="bg-white/5 p-4 rounded-xl border border-white/10 hover:bg-white/10 hover:border-white/20 transition-all duration-300 group col-span-2 sm:col-span-1">
             <div className="flex items-center gap-2 mb-2">
               <Hash className="w-4 h-4 text-accent group-hover:scale-110 transition-transform" />
-              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">Market Rank</p>
+              <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+                Market Rank
+              </p>
             </div>
-            <p className="text-lg font-mono text-white truncate">
-              {selectedAsset.market_cap_rank ? `#${selectedAsset.market_cap_rank.toLocaleString()}` : "N/A"}
+            <p className="text-lg font-mono tabular-nums text-white truncate">
+              {selectedAsset.market_cap_rank
+                ? `#${selectedAsset.market_cap_rank.toLocaleString()}`
+                : "N/A"}
             </p>
           </div>
         </div>
-
 
         <div className="mt-auto pt-4">
           <DummyButtons />
         </div>
       </div>
-
 
       <div className="mt-auto border-t border-white/10 bg-white/5 p-4 shrink-0 flex justify-center text-xs text-muted-foreground">
         <TimeStampState lastUpdated={selectedAsset.last_updated || ""} />

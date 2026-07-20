@@ -11,6 +11,7 @@ import { useEffect } from "react";
 import { TablePagination } from "./TablePagination";
 import { TrendingDown, TrendingUp } from "lucide-react";
 import ErrorComponent from "./Error";
+import Empty from "./Empty";
 function DataTable() {
   const {
     isLoading,
@@ -61,6 +62,14 @@ function DataTable() {
               </TableCell>
             </TableRow>
           </TableBody>
+        ) : filteredPaginatedItems.length === 0 ? (
+          <TableBody>
+            <TableRow>
+              <TableCell colSpan={5} className="text-center h-64 text-muted-foreground">
+                <Empty />
+              </TableCell>
+            </TableRow>
+          </TableBody>
         ) : (
           <TableBody className="text-white border-separate border-spacing-0">
             {filteredPaginatedItems.map((asset) => (
@@ -78,20 +87,20 @@ function DataTable() {
                     <span className="font-semibold">{asset.name}</span>
                   </div>
                 </TableCell>
-                <TableCell className="text-muted-foreground font-mono text-sm uppercase py-4 hidden sm:table-cell">
+                <TableCell className="text-muted-foreground font-mono tabular-nums text-sm uppercase py-4 hidden sm:table-cell">
                   {asset.symbol}
                 </TableCell>
-                <TableCell className="font-medium py-4">
+                <TableCell className="font-medium py-4 font-mono tabular-nums">
                   ${asset.current_price.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 6 })}
 
-                  <div className={`text-xs mt-1 sm:hidden ${asset.price_change_percentage_24h < 0 ? "text-red-400" : "text-green-400"}`}>
+                  <div className={` font-mono tabular-nums  text-xs mt-1 sm:hidden ${asset.price_change_percentage_24h < 0 ? "text-red-400" : "text-green-400"}`}>
                     {asset.price_change_percentage_24h < 0 ? "" : "+"}{(asset.price_change_percentage_24h || 0).toFixed(2)}%
                   </div>
                 </TableCell>
                 <TableCell className="text-center py-4 hidden sm:table-cell">
                   <div className="flex justify-center">
                     <span
-                      className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold ${asset.price_change_percentage_24h < 0
+                      className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold font-mono tabular-nums ${asset.price_change_percentage_24h < 0
                         ? "bg-red-500/10 text-red-400 border border-red-500/20"
                         : "bg-green-500/10 text-green-400 border border-green-500/20"
                         }`}
@@ -105,7 +114,7 @@ function DataTable() {
                     </span>
                   </div>
                 </TableCell>
-                <TableCell className="text-right pr-6 py-4 font-mono text-sm text-muted-foreground hidden md:table-cell">
+                <TableCell className="text-right pr-6 py-4 font-mono tabular-nums text-sm text-muted-foreground hidden md:table-cell">
                   ${asset.total_volume.toLocaleString()}
                 </TableCell>
               </TableRow>
