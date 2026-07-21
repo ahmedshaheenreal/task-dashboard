@@ -36,7 +36,8 @@ interface MarketState {
   };
 }
 
-const API_URL = "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd";
+const API_URL =
+  "https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd";
 
 export const useMarketStore = create<MarketState>((set, get) => ({
   assets: [],
@@ -56,16 +57,13 @@ export const useMarketStore = create<MarketState>((set, get) => ({
   refreshAssetById: async (id) => {
     try {
       set({ isLoading: true, error: null });
-      const response = await fetch(
-        `${API_URL}&ids=${id}`,
-      );
+      const response = await fetch(`${API_URL}&ids=${id}`);
       const data = await response.json();
       if (data.length > 0)
         set((state) => ({
-          assets: state.assets.map((coin) => coin.id === id ? data[0] : coin),
+          assets: state.assets.map((coin) => (coin.id === id ? data[0] : coin)),
           selectedAsset: data[0],
         }));
-
     } catch (error) {
       console.error("Error refreshing asset by ID", error);
     } finally {
@@ -83,7 +81,7 @@ export const useMarketStore = create<MarketState>((set, get) => ({
       );
 
       if (!response.ok) {
-        set({ assets: [], })
+        console.log("HIIIIIIIIIIIII", get().error);
         throw new Error(
           `API Error: ${response.status} - Rate limit or invalid request.`,
         );
@@ -102,8 +100,11 @@ export const useMarketStore = create<MarketState>((set, get) => ({
         }
       }
     } catch (err: any) {
-
-      set({ error: err.message || "Something went wrong", isLoading: false });
+      set({
+        assets: [],
+        error: `API Error:  - Rate limit or invalid request.`,
+        isLoading: false,
+      });
     }
   },
 
